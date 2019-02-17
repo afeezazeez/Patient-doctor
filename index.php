@@ -1,83 +1,78 @@
-<?php
-session_start();
-session_destroy();  
-
-print_r($_SESSION);
-
-?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <!-- Required meta tags-->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="au theme template">
-    <meta name="author" content="Hau Nguyen">
-    <meta name="keywords" content="au theme template">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WELCOME</title>
+  <meta name="description" content="Free Bootstrap Theme by BootstrapMade.com">
+  <meta name="keywords" content="free website templates, free bootstrap themes, free template, free bootstrap, free website template">
 
-    <!-- Title Page-->
-    <title>Welcome</title>
+    <link href="vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+    <link href="vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+  </head>
 
-    <!-- Fontfaces CSS-->
-    <link href="assets/css/font-face.css" rel="stylesheet" media="all">
-    <link href="assets/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
-    <link href="assets/vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
-    <link href="assets/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all"
-
-    <!-- Bootstrap CSS-->
-    <link href="assets/vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
-
-    <!-- Vendor CSS-->
-    <link href="assets/vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
-    <link href="assets/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
-    <link href="assets/vendor/wow/animate.css" rel="stylesheet" media="all">
-    <link href="assets/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
-    <link href="assets/vendor/slick/slick.css" rel="stylesheet" media="all">
-    <link href="assets/vendor/select2/select2.min.css" rel="stylesheet" media="all">
-    <link href="assets/vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
-
-    <!-- Main CSS-->
-    <link href="assets/css/theme.css" rel="stylesheet" media="all">
-
-</head>
-<body>
-
-<div class="container">
-    <div class="jumbotron text-center"><h1>Infantry Nga</h1></div>
-    <li><a href="auth/adminlogin.php">Login as admin.</a></li>
-    <li><a href="auth/doctorregister.php">Register as doctor.</a></li>
-    <li><a href="auth/patientregister.php">Register as patient.</a></li>
-    <li><a href="auth/doctorlogin.php">Login as doctor.</a></li>
-    <li><a href="auth/patientlogin.php">Login as patient.</a></li>
-</div>
-
-
-    <!-- Jquery JS-->
-    <script src="assets/vendor/jquery-3.2.1.min.js"></script>
-    <!-- Bootstrap JS-->
-    <script src="assets/vendor/bootstrap-4.1/popper.min.js"></script>
-    <script src="assets/vendor/bootstrap-4.1/bootstrap.min.js"></script>
-    <!-- Vendor JS       -->
-    <script src="assets/vendor/slick/slick.min.js">
-    </script>
-    <script src="assets/vendor/wow/wow.min.js"></script>
-    <script src="assets/vendor/animsition/animsition.min.js"></script>
-    <script src="assets/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js">
-    </script>
-    <script src="assets/vendor/counter-up/jquery.waypoints.min.js"></script>
-    <script src="assets/vendor/counter-up/jquery.counterup.min.js">
-    </script>
-    <script src="assets/vendor/circle-progress/circle-progress.min.js"></script>
-    <script src="assets/vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
-    <script src="assets/vendor/chartjs/Chart.bundle.min.js"></script>
-    <script src="assets/vendor/select2/select2.min.js">
-    </script>
-
-    <!-- Main JS-->
-    <script src="assets/js/main.js"></script>
-
+<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
+  <!--banner-->
+  <section id="banner" class="banner">
+    <div class="bg-color">
+      <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+          <div class="col-md-12">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                      </button>
+              <a class="navbar-brand" href="#"><h1 class="white text">Infantry Nga</h1></a>
+            </div>
+            <div class="collapse navbar-collapse navbar-right" id="myNavbar">
+              <ul class="nav navbar-nav">
+                <li class="active text"><a href="#banner">Home</a></li>
+                <li class="text"><a href="adminlogin.php">admin sign in</a></li>
+                <li class="text"><a href="doctorlogin.php">doctor sign in</a></li>
+                <li class="text"><a href="doctorregister.php">doctor sign up</a></li>
+                <li class="text"><a href="patientlogin.php">patient sign in</a></li>
+                <li class="text"><a href="patientregister.php">patient sign up</a></li>
+                <li class="text"><a href="#contact">contact</a></li>
+               <li class="text"><a href="#contact">about</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div class="container">
+        <div class="row">
+          <div class="banner-info">
+            
+            <div class="banner-text text-center">
+              <div class="text">
+                <h1 class="white ">Healthcare at your desk!!</h1>
+                
+              </div>
+              <p>
+                <span><i class="fa fa-stethoscope icons"></i></span>
+                <span><i class="fa fa-ambulance icons"></i></span>
+                <span><i class="fa fa-plus-square icons"></i></span>
+                <span><i class="fa fa-medkit icons"></i></span>
+                <span><i class="fa fa-hospital-o icons"></i></span>
+              </p>
+             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!--/ banner-->
+  <script src="js/jquery.min.js"></script>
+  <script src="js/jquery.easing.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/custom.js"></script>
+ 
 </body>
 
 </html>
-<!-- end documen
