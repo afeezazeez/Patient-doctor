@@ -1,7 +1,20 @@
 <?php
+session_start();
 if(!isset($_SESSION['admin_id'])){
   header("Location:index.php");
 }
+  $id=$_SESSION['admin_id'];
+  $userType='admin';
+  $con=mysqli_connect('localhost','root','','infantry');
+  $sql="select * from $userType where id='$id' ";
+  $dbc=mysqli_query($con,$sql);
+  while ($row=mysqli_fetch_array($dbc)) {
+      $username=$row['fullName'];
+      $imageName=$row['imageName'];
+      $email=$row['emailAddress'];
+
+  }
+
 ?>
 
 <!DOCTYPE html>
@@ -16,17 +29,18 @@ if(!isset($_SESSION['admin_id'])){
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Admin Home</title>
+    <title>Welcome <?php echo $username;?></title>
 
     <!-- Title Page-->
     <?php include('includes/css.php');?>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
     
 </head>
 
 <body class="animsition">
     <div class="page-wrapper">
         <!-- MENU SIDEBAR-->
-        <?php include('includes/menuSidebar.php');?>
+    <?php include('includes/sidebar.php');?>
         <!-- END MENU SIDEBAR-->
         
         <!-- PAGE CONTAINER-->
@@ -35,435 +49,203 @@ if(!isset($_SESSION['admin_id'])){
           <?php include('includes/header.php');?>
             
             <!-- END HEADER DESKTOP-->
-            
-            <!-- BREADCRUMB-->
-            <section class="au-breadcrumb m-t-75">
-                <div class="section__content section__content--p30">
-                    <div class="container-fluid">
-                        <div class="row">
+            <!-- doctor table-->
+                <div class="row">
+                                    <div class="col-md-12">
+                                        <!-- DATA TABLE-->
+                                        <div class="doctor_table">
+                                             <h3 class="title-3 m-b-30">Doctors verification</h3>
+                                             <?php
+                                                if(isset($_POST['verify'])){
+                                                    $id=$_POST['doctorId'];
+                                                     $con=mysqli_connect('localhost','root','','infantry');
+                                                          $sql="update doctors set status=1 where id='$id' ";
+                                                          $dbc=mysqli_query($con,$sql);
+                                                          if($dbc){
+                                                            echo "<script>alert('doctor has been verified')</script>";
+                                                          }
+                                                         
+                                                    
+                                                }
+
+
+                                        if (isset($_POST['addSpec'])) {
+                                            $spec=$_POST['spec'];
+                                            $sproblem=$_POST['sproblem'];
+                                            
+                                            $con=mysqli_connect('localhost','root','','infantry');
+                                            $sql="INSERT INTO specializations VALUES (NULL, '$spec', '
+                                            $sproblem')";
+                                            $dbc=mysqli_query($con,$sql);
+                                            if ($dbc) {
+                                             echo "<script>alert('specialization has been saved')</script>";
+                                            }
+                                             else
+                                               echo "error".mysqli_error($con);
+                                                         
+                                     
+
+                                                    
+                                                }
+
+                                                if(isset($_POST['deleteSpec'])){
+                                                    $id=$_POST['specId'];
+
+                                            $con=mysqli_connect('localhost','root','','infantry');
+                                            $sql="delete from specializations where id='$id' ";
+                                            $dbc=mysqli_query($con,$sql);
+                                            if ($dbc) {
+                                             echo "<script>alert('specialization has been deleted')</script>";
+                                            }
+                                             else
+                                               echo "error".mysqli_error($con);
+                                                         
+                                     
+
+                                                }
+                                             ?>
+                                   
+                                        <div class="table-responsive m-b-40">
+                                            <table class="table table-borderless table-data3">
+                                                <thead>
+                                                    <tr>
+                                                        <th>S/N</th>
+                                                        <th>Full Name</th>
+                                                        <th>Email</th>
+                                                        <th>Specialization</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php
+                                                          $con=mysqli_connect('localhost','root','','infantry');
+                                                          $sql="select * from doctors";
+                                                          $dbc=mysqli_query($con,$sql);
+                                                          $count=1;
+                                                          while ($row=mysqli_fetch_array($dbc)) {
+                                                    ?>
+                                                    <tr>
+                                                        <td><?php echo $count;?></td>
+                                                        <td><?php echo $row['fullName'];?></td>
+                                                        <td><?php echo $row['emailAddress'];?></td>
+                                                        <td><?php echo $row['specialization'];?></td>
+                                                        
+                                                            <?php
+                                                                if($row['status']==1){
+                                                                ?>
+                                                                <td>
+                                                                <input type="submit" class="btn btn-sm btn-success"  value="verified" disabled></td>
+                                                                <?php
+                                                                }
+                                                                else{
+                                                            ?>
+                                                            <td>
+                                                            <form action="" method="post">
+                                                            <input type="hidden" name="doctorId" value="<?php echo $row['id'];?>">
+                                                            <input type="submit" class="btn btn-sm btn-danger" name="verify" value="verify"><br>
+                                                            </form>
+                                                        </td>
+                                                    </tr>
+                                                    <?php
+                                                    }
+                                                        $count++;
+                                                        }
+
+                                                    ?>
+                                                    
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!-- END DATA TABLE     -->
+
+
+                       
+
+            <!-- end doctor table-->
+             <div class="row m-t-30">
                             <div class="col-md-12">
-                                <div class="au-breadcrumb-content">
-                                    <div class="au-breadcrumb-left">
-                                        <span class="au-breadcrumb-span">You are here:</span>
-                                        <ul class="list-unstyled list-inline au-breadcrumb__list">
-                                            <li class="list-inline-item active">
-                                                <a href="#">Home</a>
-                                            </li>
-                                            <li class="list-inline-item seprate">
-                                                <span>/</span>
-                                            </li>
-                                            <li class="list-inline-item">Dashboard</li>
-                                        </ul>
-                                    </div>
-                                    <button class="au-btn au-btn-icon au-btn--green">
-                                        <i class="zmdi zmdi-plus"></i>add item</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <!-- END BREADCRUMB-->
+                                <!-- DATA TABLE-->
+                                <h3 class="title-3 m-b-30">Specializations</h3>
+                                             
+                                <div class="table-responsive m-b-40">
+                                    <table class="table table-borderless table-data3">
+            
+                                        <thead>
+                                            <tr>
+                                                <th>S/N</th>
+                                                <th>Title</th>
+                                                <th class="align-left">Sample Problems</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                             <?php
+                                                  $con=mysqli_connect('localhost','root','','infantry');
+                                                  $sql="select * from specializations";
+                                                  $dbc=mysqli_query($con,$sql);
+                                                  $count=1;
+                                                  while ($row=mysqli_fetch_array($dbc)) {
+                                            ?>
+                                                   
+                                            <tr>
+                                                <td><?php echo $count;?></td>
+                                                <td><?php echo $row['name'];?></td>
+                                                <td class="align-right"><?php echo $row['sample_problems'];?></td>
+                                                <td>
+                                                    <form action="" method="post">
+                                                        <input type="hidden" name="specId" value="<?php echo $row['id'];?>">
+                                                        <input type="submit" class="btn btn-sm btn-danger" name="deleteSpec" value="delete"><br>
+                                                    </form>
+                                                </td>
+                                                
+                                            </tr>
+                                            <?php
+                                                $count++;
+                                                }
 
-            <!-- STATISTIC-->
-            <section class="statistic">
-                <div class="section__content section__content--p30">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-6 col-lg-3">
-                                <div class="statistic__item">
-                                    <h2 class="number">10,368</h2>
-                                    <span class="desc">members online</span>
-                                    <div class="icon">
-                                        <i class="zmdi zmdi-account-o"></i>
-                                    </div>
+                                            ?>
+                                        
+                                        </tbody>
+                                    </table>
                                 </div>
-                            </div>
-                            <div class="col-md-6 col-lg-3">
-                                <div class="statistic__item">
-                                    <h2 class="number">388,688</h2>
-                                    <span class="desc">items sold</span>
-                                    <div class="icon">
-                                        <i class="zmdi zmdi-shopping-cart"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-lg-3">
-                                <div class="statistic__item">
-                                    <h2 class="number">1,086</h2>
-                                    <span class="desc">this week</span>
-                                    <div class="icon">
-                                        <i class="zmdi zmdi-calendar-note"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-lg-3">
-                                <div class="statistic__item">
-                                    <h2 class="number">$1,060,386</h2>
-                                    <span class="desc">total earnings</span>
-                                    <div class="icon">
-                                        <i class="zmdi zmdi-money"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <!-- END STATISTIC-->
 
-            <section>
-                <div class="section__content section__content--p30">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-xl-8">
-                                <!-- RECENT REPORT 2-->
-                                <div class="recent-report2">
-                                    <h3 class="title-3">recent reports</h3>
-                                    <div class="chart-info">
-                                        <div class="chart-info__left">
-                                            <div class="chart-note">
-                                                <span class="dot dot--blue"></span>
-                                                <span>products</span>
-                                            </div>
-                                            <div class="chart-note">
-                                                <span class="dot dot--green"></span>
-                                                <span>Services</span>
-                                            </div>
-                                        </div>
-                                        <div class="chart-info-right">
-                                            <div class="rs-select2--dark rs-select2--md m-r-10">
-                                                <select class="js-select2" name="property">
-                                                    <option selected="selected">All Properties</option>
-                                                    <option value="">Products</option>
-                                                    <option value="">Services</option>
-                                                </select>
-                                                <div class="dropDownSelect2"></div>
-                                            </div>
-                                            <div class="rs-select2--dark rs-select2--sm">
-                                                <select class="js-select2 au-select-dark" name="time">
-                                                    <option selected="selected">All Time</option>
-                                                    <option value="">By Month</option>
-                                                    <option value="">By Day</option>
-                                                </select>
-                                                <div class="dropDownSelect2"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="recent-report__chart">
-                                        <canvas id="recent-rep2-chart"></canvas>
-                                    </div>
-                                </div>
-                                <!-- END RECENT REPORT 2             -->
-                            </div>
-                            <div class="col-xl-4">
-                                <!-- TASK PROGRESS-->
-                                <div class="task-progress">
-                                    <h3 class="title-3">task progress</h3>
-                                    <div class="au-skill-container">
-                                        <div class="au-progress">
-                                            <span class="au-progress__title">Web Design</span>
-                                            <div class="au-progress__bar">
-                                                <div class="au-progress__inner js-progressbar-simple" role="progressbar" data-transitiongoal="90">
-                                                    <span class="au-progress__value js-value"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="au-progress">
-                                            <span class="au-progress__title">HTML5/CSS3</span>
-                                            <div class="au-progress__bar">
-                                                <div class="au-progress__inner js-progressbar-simple" role="progressbar" data-transitiongoal="85">
-                                                    <span class="au-progress__value js-value"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="au-progress">
-                                            <span class="au-progress__title">WordPress</span>
-                                            <div class="au-progress__bar">
-                                                <div class="au-progress__inner js-progressbar-simple" role="progressbar" data-transitiongoal="95">
-                                                    <span class="au-progress__value js-value"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="au-progress">
-                                            <span class="au-progress__title">Support</span>
-                                            <div class="au-progress__bar">
-                                                <div class="au-progress__inner js-progressbar-simple" role="progressbar" data-transitiongoal="95">
-                                                    <span class="au-progress__value js-value"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- END TASK PROGRESS-->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
 
-            <section>
-                <div class="section__content section__content--p30">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-xl-6">
-                                <!-- USER DATA-->
-                                <div class="user-data m-b-40">
-                                    <h3 class="title-3 m-b-30">
-                                        <i class="zmdi zmdi-account-calendar"></i>user data</h3>
-                                    <div class="filters m-b-45">
-                                        <div class="rs-select2--dark rs-select2--md m-r-10 rs-select2--border">
-                                            <select class="js-select2" name="property">
-                                                <option selected="selected">All Properties</option>
-                                                <option value="">Products</option>
-                                                <option value="">Services</option>
-                                            </select>
-                                            <div class="dropDownSelect2"></div>
-                                        </div>
-                                        <div class="rs-select2--dark rs-select2--sm rs-select2--border">
-                                            <select class="js-select2 au-select-dark" name="time">
-                                                <option selected="selected">All Time</option>
-                                                <option value="">By Month</option>
-                                                <option value="">By Day</option>
-                                            </select>
-                                            <div class="dropDownSelect2"></div>
-                                        </div>
+                       <div class="row m-t-30">
+                            <div class="col-md-12">
+                                    <div class="card">
+                                    <div class="card-header">
+                                        <strong><h3 class="title-3 m-b-30">Add new specialization here</h3>
+                                        </strong> 
                                     </div>
-                                    <div class="table-responsive table-data">
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <td>
-                                                        <label class="au-checkbox">
-                                                            <input type="checkbox">
-                                                            <span class="au-checkmark"></span>
-                                                        </label>
-                                                    </td>
-                                                    <td>name</td>
-                                                    <td>role</td>
-                                                    <td>type</td>
-                                                    <td></td>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>
-                                                        <label class="au-checkbox">
-                                                            <input type="checkbox">
-                                                            <span class="au-checkmark"></span>
-                                                        </label>
-                                                    </td>
-                                                    <td>
-                                                        <div class="table-data__info">
-                                                            <h6>lori lynch</h6>
-                                                            <span>
-                                                                <a href="#">johndoe@gmail.com</a>
-                                                            </span>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <span class="role admin">admin</span>
-                                                    </td>
-                                                    <td>
-                                                        <div class="rs-select2--trans rs-select2--sm">
-                                                            <select class="js-select2" name="property">
-                                                                <option selected="selected">Full Control</option>
-                                                                <option value="">Post</option>
-                                                                <option value="">Watch</option>
-                                                            </select>
-                                                            <div class="dropDownSelect2"></div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <span class="more">
-                                                            <i class="zmdi zmdi-more"></i>
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <label class="au-checkbox">
-                                                            <input type="checkbox" checked="checked">
-                                                            <span class="au-checkmark"></span>
-                                                        </label>
-                                                    </td>
-                                                    <td>
-                                                        <div class="table-data__info">
-                                                            <h6>lori lynch</h6>
-                                                            <span>
-                                                                <a href="#">johndoe@gmail.com</a>
-                                                            </span>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <span class="role user">user</span>
-                                                    </td>
-                                                    <td>
-                                                        <div class="rs-select2--trans rs-select2--sm">
-                                                            <select class="js-select2" name="property">
-                                                                <option value="">Full Control</option>
-                                                                <option value="" selected="selected">Post</option>
-                                                                <option value="">Watch</option>
-                                                            </select>
-                                                            <div class="dropDownSelect2"></div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <span class="more">
-                                                            <i class="zmdi zmdi-more"></i>
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <label class="au-checkbox">
-                                                            <input type="checkbox">
-                                                            <span class="au-checkmark"></span>
-                                                        </label>
-                                                    </td>
-                                                    <td>
-                                                        <div class="table-data__info">
-                                                            <h6>lori lynch</h6>
-                                                            <span>
-                                                                <a href="#">johndoe@gmail.com</a>
-                                                            </span>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <span class="role user">user</span>
-                                                    </td>
-                                                    <td>
-                                                        <div class="rs-select2--trans rs-select2--sm">
-                                                            <select class="js-select2" name="property">
-                                                                <option value="">Full Control</option>
-                                                                <option value="" selected="selected">Post</option>
-                                                                <option value="">Watch</option>
-                                                            </select>
-                                                            <div class="dropDownSelect2"></div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <span class="more">
-                                                            <i class="zmdi zmdi-more"></i>
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <label class="au-checkbox">
-                                                            <input type="checkbox">
-                                                            <span class="au-checkmark"></span>
-                                                        </label>
-                                                    </td>
-                                                    <td>
-                                                        <div class="table-data__info">
-                                                            <h6>lori lynch</h6>
-                                                            <span>
-                                                                <a href="#">johndoe@gmail.com</a>
-                                                            </span>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <span class="role member">member</span>
-                                                    </td>
-                                                    <td>
-                                                        <div class="rs-select2--trans rs-select2--sm">
-                                                            <select class="js-select2" name="property">
-                                                                <option selected="selected">Full Control</option>
-                                                                <option value="">Post</option>
-                                                                <option value="">Watch</option>
-                                                            </select>
-                                                            <div class="dropDownSelect2"></div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <span class="more">
-                                                            <i class="zmdi zmdi-more"></i>
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                    <div class="card-body card-block">
+                                        <form action="" method="post">
+                                            <div class="form-group">
+                                                <label for="nf-email" class=" form-control-label">Specialization</label>
+                                                <input type="text" id="spec" name="spec" placeholder="Enter Specialization.." class="form-control" required>
+                                                 </div>
+                                            <div class="form-group">
+                                                <label for="" class=" form-control-label">Sample problems</label>
+                                                <input type="sproblem" id="sproblem" name="sproblem" placeholder="Enter Sample Problems.." class="form-control" required>
+                                                
+                                            </div>
+                                        
                                     </div>
-                                    <div class="user-data__footer">
-                                        <button class="au-btn au-btn-load">load more</button>
+                                    <div class="card-footer">
+                                        <input type="submit" class="btn btn-primary btn-sm" name="addSpec">
+                                        </form>
+                                            
+                                        
                                     </div>
                                 </div>
-                                <!-- END USER DATA-->
-                            </div>
-                            <div class="col-xl-6">
-                                <!-- MAP DATA-->
-                                <div class="map-data m-b-40">
-                                    <h3 class="title-3 m-b-30">
-                                        <i class="zmdi zmdi-map"></i>map data</h3>
-                                    <div class="filters">
-                                        <div class="rs-select2--dark rs-select2--md m-r-10 rs-select2--border">
-                                            <select class="js-select2" name="property">
-                                                <option selected="selected">All Worldwide</option>
-                                                <option value="">Products</option>
-                                                <option value="">Services</option>
-                                            </select>
-                                            <div class="dropDownSelect2"></div>
-                                        </div>
-                                        <div class="rs-select2--dark rs-select2--sm rs-select2--border">
-                                            <select class="js-select2 au-select-dark" name="time">
-                                                <option selected="selected">All Time</option>
-                                                <option value="">By Month</option>
-                                                <option value="">By Day</option>
-                                            </select>
-                                            <div class="dropDownSelect2"></div>
-                                        </div>
-                                    </div>
-                                    <div class="map-wrap m-t-45 m-b-80">
-                                        <div id="vmap" style="height: 284px;"></div>
-                                    </div>
-                                    <div class="table-wrap">
-                                        <div class="table-responsive table-style1">
-                                            <table class="table">
-                                                <tbody>
-                                                    <tr>
-                                                        <td>United States</td>
-                                                        <td>$119,366.96</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Australia</td>
-                                                        <td>$70,261.65</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>United Kingdom</td>
-                                                        <td>$46,399.22</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="table-responsive table-style1">
-                                            <table class="table">
-                                                <tbody>
-                                                    <tr>
-                                                        <td>Germany</td>
-                                                        <td>$20,366.96</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>France</td>
-                                                        <td>$10,366.96</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Russian</td>
-                                                        <td>$5,366.96</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- END MAP DATA-->
+                            
                             </div>
                         </div>
-                    </div>
-                </div>
-            </section>
+             
+                                                  
+            
 
             <!--footer-->
+
             <?php include('includes/footer.php');?>
 
             <!-- END PAGE CONTAINER-->
