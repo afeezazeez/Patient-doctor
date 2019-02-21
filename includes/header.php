@@ -19,8 +19,11 @@
                                         </form>
                                     </div>
                                 </div>
-                                <div class="header-button-item has-noti js-item-menu">
-                                    <i class="zmdi zmdi-notifications"></i>
+                                <div class="header-button-item has-noti ">
+                                    <span><a href="home.php" style="color: white;"><i class="zmdi zmdi-home"></i></span>
+                                    &nbsp&nbsp
+                                    <div class="header-button-item has-noti js-item-menu">
+                                    <span><i class="zmdi zmdi-notifications"></i></span>
                                     <div class="notifi-dropdown js-dropdown">
                                         <div class="notifi__title">
                                             <p>You have 3 Notifications</p>

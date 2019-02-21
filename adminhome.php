@@ -1,8 +1,9 @@
-<?php
+P<?php
 session_start();
 if(!isset($_SESSION['admin_id'])){
   header("Location:index.php");
 }
+
   $id=$_SESSION['admin_id'];
   $userType='admin';
   $con=mysqli_connect('localhost','root','','infantry');
@@ -54,7 +55,8 @@ if(!isset($_SESSION['admin_id'])){
                                     <div class="col-md-12">
                                         <!-- DATA TABLE-->
                                         <div class="doctor_table">
-                                             <h3 class="title-3 m-b-30">Doctors verification</h3>
+                                             <h3 class="title-3 m-b-30">Doctors verification
+                                             </h3>
                                              <?php
                                                 if(isset($_POST['verify'])){
                                                     $id=$_POST['doctorId'];

@@ -18,19 +18,8 @@ if(!isset($_SESSION['doctor_id'])){
   }
 
  
-if(isset($_GET['match'])){
-    $match_id=$_GET['match'];
-    $con=mysqli_connect('localhost','root','','infantry');
-    $sql="delete from matchings where id='$match_id' ";
-    $dbc=mysqli_query($con,$sql);
-    if($dbc){
-    echo "<script>alert('chat has been ended.')</script>";
-    echo "<script>window.location='doctorhome.php'</script>";
-}
-else
-echo mysql_error($con);
-}  
-                                            
+  
+
 
 
 ?>
@@ -99,8 +88,7 @@ echo mysql_error($con);
                                                                     <div class="au-task__item-inner">
                                                                         <h5 class="task">
                                                                              <?= $res['fullName'] ?>
-                                                                            <button style="margin-left: 10px;" id="<?= $res['patient_id'] ?>"><i title="Chat with <?= $res['fullName'] ?>" class="zmdi zmdi-comment-text" ></i></<button>&nbsp&nbsp
-                                                                                <a href="doctorhome.php?match=<?=$res['id']?>"><i class="fa fa-trash" title="end chat "></i></a>
+                                                                            <button style="margin-left: 10px;" id="<?= $res['patient_id'] ?>"><i title="Chat with <?= $res['fullName'] ?>" class="zmdi zmdi-comment-text" ></i></<button>
                                                                         </h5>
                                                                         <span class="time" style="text-transform: lowercase;"><?= date('F j, Y, g:i A',strtotime($res['start_date'])) ?></span>
                                                                     </div>
@@ -133,9 +121,7 @@ echo mysql_error($con);
                                         <div class="au-card au-card--no-shadow au-card--no-pad m-b-40 au-card--border">
                                             <div class="au-card-title" style="background-image:url('images/pat.png');">
                                                 <div class="bg-overlay bg-overlay--blue"></div>
-                                                <h3><i class="fa fa-hospital-o"></i>My Posts</h3>
-                                                
-                                                
+                                                <h3>My Posts</h3>
                                               
                                             </div>
                                             <div class="au-inbox-wrap">
@@ -145,11 +131,8 @@ echo mysql_error($con);
                                                         <?php
                                                               $id=$_SESSION['doctor_id'];
                                                             $con=mysqli_connect('localhost','root','','infantry');
-                                                            $sql="select * from posts where doctor_id='$id' limit 5";
+                                                            $sql="select * from posts where doctor_id='$id' limit 10";
                                                             $dbc=mysqli_query($con,$sql);
-                                                            if($dbc->num_rows>0){
-
-                                                            
                                                             while ($row=mysqli_fetch_array($dbc)) {
                                                                 $Ptitle=$row['title'];
                                                                 $Pcontent=$row['content'];
@@ -185,26 +168,9 @@ echo mysql_error($con);
                                                            echo '<div class="viewall"><a href="allposts.php" class="btn btn-sm btn-primary " >View All</a></div>';
                                                              
                                                               
-                                                                }
-                                                                else{
-                                                                    ?>
-                                                                    <div class="errorss">
-                                                            <h5 class="text-center">You </h5>
-                                                            <br>
-                                                            <h5 class="text-center">Have not </h5>
-                                                            <br>
-                                                            <h5 class="text-center">Post </h5>
-                                                            <br>
-                                                            <h5 class="text-center">To be </h5>
-                                                            <br>
-                                                            <h5 class="text-center">Displayed!</h5>
-                                                            </div>                                                            
-                                                                    <?php
-                                                                }
+                                                      
 
                                                             ?>
-
-
                                                          
                                                         
                                                                                                         </div>
@@ -270,7 +236,7 @@ echo mysql_error($con);
                                         <?php
                                             if (isset($_POST['addPost'])) {
                                              $title=$_POST['title'];
-                                             $content=addslashes($_POST['content']);
+                                             $content=$_POST['content'];
                                              $doctor_id=$_POST['doctor_id'];
                                              $date=$_POST['date'];
                                              $slug=$_POST['slug'];

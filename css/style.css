@@ -543,3 +543,74 @@ footer
 .doctor_table{
   padding: 110px;
 }
+
+.match{
+    margin-top: 100px;
+}
+.chat{
+    width: 60px;
+    height: 30px;
+
+}
+.errorss {
+    padding: 20px;
+}
+
+.errorss h5 {
+    font-size: 20px !important;
+    font-family:times new roman;
+}
+.post-div{
+    /*padding: 10px;*/
+    width: 70%;
+    margin: auto;
+}
+.post-image{
+    width: 70px;
+    
+}
+.post-title{
+    color: black;
+}
+.viewall{
+    text-align: center;
+    margin: 10px;
+}
+.link{
+    color: black;
+    font-family: verdana;
+}
+.singlePost{
+    width: 70%;
+    height: 80%;
+    margin: 20px;
+
+}
+.content-text{
+    font-size: 17px;
+    font-family: times new roman;
+}
+.comment{
+    margin-right:20px;
+}
+.details{
+    padding:2px;
+    line-height: 1.6;
+}
+.com{
+    margin: 5px;
+}
+.allpost{
+    width: 100%;
+}
+.post-body{
+    width: 100%;
+}
+.readmore{
+    margin: 10px;
+    height:30px;
+}
+.add{
+    margin-right: 45px; 
+    
+}
