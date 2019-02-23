@@ -145,7 +145,7 @@ echo mysql_error($con);
                                                         <?php
                                                               $id=$_SESSION['doctor_id'];
                                                             $con=mysqli_connect('localhost','root','','infantry');
-                                                            $sql="select * from posts where doctor_id='$id' limit 5";
+                                                            $sql="select * from posts where doctor_id='$id' ";
                                                             $dbc=mysqli_query($con,$sql);
                                                             if($dbc->num_rows>0){
 
@@ -286,6 +286,7 @@ echo mysql_error($con);
                                              $upload=move_uploaded_file($_FILES['photo']['tmp_name'], $target_file);
                                             if($dbc && $upload){
                                                 echo "<script>alert('post has been saved')</script>";
+                                                echo "<script>window.location='doctorhome.php'</script>";
                                              }
                                              else
                                                 echo mysqli_error($con);
