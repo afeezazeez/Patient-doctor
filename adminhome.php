@@ -1,4 +1,4 @@
-P<?php
+<?php
 session_start();
 if(!isset($_SESSION['admin_id'])){
   header("Location:index.php");
@@ -212,7 +212,7 @@ if(!isset($_SESSION['admin_id'])){
                                 </div>
 
 
-                       <div class="row m-t-30">
+                       <div class="row m-t-30" id="spec">
                             <div class="col-md-12">
                                     <div class="card">
                                     <div class="card-header">
@@ -233,7 +233,7 @@ if(!isset($_SESSION['admin_id'])){
                                         
                                     </div>
                                     <div class="card-footer">
-                                        <input type="submit" class="btn btn-primary btn-sm" name="addSpec">
+                                        <input type="submit" class="btn btn-primary btn-sm" name="addSpec" value="add specialization">
                                         </form>
                                             
                                         

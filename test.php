@@ -1,6 +1,4 @@
 <?php
-session_start();
-
-print_r($_SESSION);
-
+//echo sha1('doctor');
+echo date("g:i a.", time());
 ?>

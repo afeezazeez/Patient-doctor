@@ -614,3 +614,13 @@ footer
     margin-right: 45px; 
     
 }
+
+.small{
+    width: 60px;
+}
+.chatBody{
+    background-color: #cc;
+    height: 450px;
+    width: 100%;
+}
+

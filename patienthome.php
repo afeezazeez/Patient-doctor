@@ -4,6 +4,35 @@ session_start();
 if(!isset($_SESSION['patient_id'])){
   header("Location:index.php");
 }
+
+
+$id=$_SESSION['patient_id'];
+  $userType='patients';
+  $con=mysqli_connect('localhost','root','','infantry');
+  $sql="select * from $userType where id='$id' ";
+  $dbc=mysqli_query($con,$sql);
+  while ($row=mysqli_fetch_array($dbc)) {
+      $patient_id=$row['id'];
+      $username=$row['fullName'];
+      $imageName=$row['imageName'];
+      $email=$row['emailAddress'];
+      $Duser_type=$row['user_type'];
+
+  }
+
+      $con=mysqli_connect('localhost','root','','infantry');
+        $sql="select * from appointments where patient_name='$username' ";
+        $dbc=mysqli_query($con,$sql);
+        $doc=mysqli_fetch_array($dbc);
+        $doc_id=$doc['doctor_id'];
+    
+
+        $query=mysqli_query($con,"select * from doctors where id='$doc_id' ");
+        $doc_name=mysqli_fetch_array($query);
+        $name=$doc_name['fullName'];
+        
+    
+
 ?>
 
 <!DOCTYPE html>
@@ -28,7 +57,7 @@ if(!isset($_SESSION['patient_id'])){
 <body class="animsition">
     <div class="page-wrapper">
         <!-- MENU SIDEBAR-->
-        <?php include('includes/menuSidebar.php');?>
+        <?php include('includes/sidebar3.php');?>
         <!-- END MENU SIDEBAR-->
         
         <!-- PAGE CONTAINER-->
@@ -37,433 +66,271 @@ if(!isset($_SESSION['patient_id'])){
           <?php include('includes/header.php');?>
             
             <!-- END HEADER DESKTOP-->
-            
-            <!-- BREADCRUMB-->
-            <section class="au-breadcrumb m-t-75">
-                <div class="section__content section__content--p30">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="au-breadcrumb-content">
-                                    <div class="au-breadcrumb-left">
-                                        <span class="au-breadcrumb-span">You are here:</span>
-                                        <ul class="list-unstyled list-inline au-breadcrumb__list">
-                                            <li class="list-inline-item active">
-                                                <a href="#">Home</a>
-                                            </li>
-                                            <li class="list-inline-item seprate">
-                                                <span>/</span>
-                                            </li>
-                                            <li class="list-inline-item">Dashboard</li>
-                                        </ul>
+            <div class="content" style="padding: 110px;">
+                 <div class="allpost">
+                      <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <strong class="card-title" style="color: black">
+                                          Doctors you have been matched with 
+                                        </strong>
                                     </div>
-                                    <button class="au-btn au-btn-icon au-btn--green">
-                                        <i class="zmdi zmdi-plus"></i>add item</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <!-- END BREADCRUMB-->
+                                    <div class="card-body">
+                                                  <?php
+                                                  $id=$_SESSION['patient_id'];
+                                                        $sql2="select matchings.*, doctors.fullName from matchings, doctors where matchings.patient_id=$id AND doctors.id = matchings.doctor_id AND matchings.status='0'  ";
+                                                        $dbc2=mysqli_query($con,$sql2);
+                                                        if ($dbc2->num_rows>0) {
 
-            <!-- STATISTIC-->
-            <section class="statistic">
-                <div class="section__content section__content--p30">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-6 col-lg-3">
-                                <div class="statistic__item">
-                                    <h2 class="number">10,368</h2>
-                                    <span class="desc">members online</span>
-                                    <div class="icon">
-                                        <i class="zmdi zmdi-account-o"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-lg-3">
-                                <div class="statistic__item">
-                                    <h2 class="number">388,688</h2>
-                                    <span class="desc">items sold</span>
-                                    <div class="icon">
-                                        <i class="zmdi zmdi-shopping-cart"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-lg-3">
-                                <div class="statistic__item">
-                                    <h2 class="number">1,086</h2>
-                                    <span class="desc">this week</span>
-                                    <div class="icon">
-                                        <i class="zmdi zmdi-calendar-note"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-lg-3">
-                                <div class="statistic__item">
-                                    <h2 class="number">$1,060,386</h2>
-                                    <span class="desc">total earnings</span>
-                                    <div class="icon">
-                                        <i class="zmdi zmdi-money"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <!-- END STATISTIC-->
+                                                          ?>
+                                                          <div class="table-responsive m-b-40">
+                                                            <table class="table table-borderless table-data3">
+                                                              <thead>
+                                                                  <tr>
+                                                                      <th>Doctor name</th>
+                                                                      <th>Complaint</th>
+                                                                      <th>Chat</th>
+                                                                    </tr>
+                                                              </thead>
+                                                               <tbody>
+                                                        
+                                                          <?php
+                                                          while ($res=mysqli_fetch_array($dbc2)) { ?>
+                                                              <tr>
+                                                                <td>
+                                                              <div class="au-task__item au-task__item--danger">
+                                                                    <div class="au-task__item-inner">
+                                                                        <h5 class="task">
+                                                                             <?= $res['fullName'] ?>
+                                                                            </h5></td>
 
-            <section>
-                <div class="section__content section__content--p30">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-xl-8">
-                                <!-- RECENT REPORT 2-->
-                                <div class="recent-report2">
-                                    <h3 class="title-3">recent reports</h3>
-                                    <div class="chart-info">
-                                        <div class="chart-info__left">
-                                            <div class="chart-note">
-                                                <span class="dot dot--blue"></span>
-                                                <span>products</span>
-                                            </div>
-                                            <div class="chart-note">
-                                                <span class="dot dot--green"></span>
-                                                <span>Services</span>
-                                            </div>
-                                        </div>
-                                        <div class="chart-info-right">
-                                            <div class="rs-select2--dark rs-select2--md m-r-10">
-                                                <select class="js-select2" name="property">
-                                                    <option selected="selected">All Properties</option>
-                                                    <option value="">Products</option>
-                                                    <option value="">Services</option>
-                                                </select>
-                                                <div class="dropDownSelect2"></div>
-                                            </div>
-                                            <div class="rs-select2--dark rs-select2--sm">
-                                                <select class="js-select2 au-select-dark" name="time">
-                                                    <option selected="selected">All Time</option>
-                                                    <option value="">By Month</option>
-                                                    <option value="">By Day</option>
-                                                </select>
-                                                <div class="dropDownSelect2"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="recent-report__chart">
-                                        <canvas id="recent-rep2-chart"></canvas>
-                                    </div>
-                                </div>
-                                <!-- END RECENT REPORT 2             -->
-                            </div>
-                            <div class="col-xl-4">
-                                <!-- TASK PROGRESS-->
-                                <div class="task-progress">
-                                    <h3 class="title-3">task progress</h3>
-                                    <div class="au-skill-container">
-                                        <div class="au-progress">
-                                            <span class="au-progress__title">Web Design</span>
-                                            <div class="au-progress__bar">
-                                                <div class="au-progress__inner js-progressbar-simple" role="progressbar" data-transitiongoal="90">
-                                                    <span class="au-progress__value js-value"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="au-progress">
-                                            <span class="au-progress__title">HTML5/CSS3</span>
-                                            <div class="au-progress__bar">
-                                                <div class="au-progress__inner js-progressbar-simple" role="progressbar" data-transitiongoal="85">
-                                                    <span class="au-progress__value js-value"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="au-progress">
-                                            <span class="au-progress__title">WordPress</span>
-                                            <div class="au-progress__bar">
-                                                <div class="au-progress__inner js-progressbar-simple" role="progressbar" data-transitiongoal="95">
-                                                    <span class="au-progress__value js-value"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="au-progress">
-                                            <span class="au-progress__title">Support</span>
-                                            <div class="au-progress__bar">
-                                                <div class="au-progress__inner js-progressbar-simple" role="progressbar" data-transitiongoal="95">
-                                                    <span class="au-progress__value js-value"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- END TASK PROGRESS-->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+                                                                            <td><div style="margin: 20px;"><?=$res['complaint']?></div>
+                                                                          </td>
 
-            <section>
-                <div class="section__content section__content--p30">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-xl-6">
-                                <!-- USER DATA-->
-                                <div class="user-data m-b-40">
-                                    <h3 class="title-3 m-b-30">
-                                        <i class="zmdi zmdi-account-calendar"></i>user data</h3>
-                                    <div class="filters m-b-45">
-                                        <div class="rs-select2--dark rs-select2--md m-r-10 rs-select2--border">
-                                            <select class="js-select2" name="property">
-                                                <option selected="selected">All Properties</option>
-                                                <option value="">Products</option>
-                                                <option value="">Services</option>
-                                            </select>
-                                            <div class="dropDownSelect2"></div>
-                                        </div>
-                                        <div class="rs-select2--dark rs-select2--sm rs-select2--border">
-                                            <select class="js-select2 au-select-dark" name="time">
-                                                <option selected="selected">All Time</option>
-                                                <option value="">By Month</option>
-                                                <option value="">By Day</option>
-                                            </select>
-                                            <div class="dropDownSelect2"></div>
-                                        </div>
-                                    </div>
-                                    <div class="table-responsive table-data">
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <td>
-                                                        <label class="au-checkbox">
-                                                            <input type="checkbox">
-                                                            <span class="au-checkmark"></span>
-                                                        </label>
-                                                    </td>
-                                                    <td>name</td>
-                                                    <td>role</td>
-                                                    <td>type</td>
-                                                    <td></td>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>
-                                                        <label class="au-checkbox">
-                                                            <input type="checkbox">
-                                                            <span class="au-checkmark"></span>
-                                                        </label>
-                                                    </td>
-                                                    <td>
-                                                        <div class="table-data__info">
-                                                            <h6>lori lynch</h6>
-                                                            <span>
-                                                                <a href="#">johndoe@gmail.com</a>
-                                                            </span>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <span class="role admin">admin</span>
-                                                    </td>
-                                                    <td>
-                                                        <div class="rs-select2--trans rs-select2--sm">
-                                                            <select class="js-select2" name="property">
-                                                                <option selected="selected">Full Control</option>
-                                                                <option value="">Post</option>
-                                                                <option value="">Watch</option>
-                                                            </select>
-                                                            <div class="dropDownSelect2"></div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <span class="more">
-                                                            <i class="zmdi zmdi-more"></i>
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <label class="au-checkbox">
-                                                            <input type="checkbox" checked="checked">
-                                                            <span class="au-checkmark"></span>
-                                                        </label>
-                                                    </td>
-                                                    <td>
-                                                        <div class="table-data__info">
-                                                            <h6>lori lynch</h6>
-                                                            <span>
-                                                                <a href="#">johndoe@gmail.com</a>
-                                                            </span>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <span class="role user">user</span>
-                                                    </td>
-                                                    <td>
-                                                        <div class="rs-select2--trans rs-select2--sm">
-                                                            <select class="js-select2" name="property">
-                                                                <option value="">Full Control</option>
-                                                                <option value="" selected="selected">Post</option>
-                                                                <option value="">Watch</option>
-                                                            </select>
-                                                            <div class="dropDownSelect2"></div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <span class="more">
-                                                            <i class="zmdi zmdi-more"></i>
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <label class="au-checkbox">
-                                                            <input type="checkbox">
-                                                            <span class="au-checkmark"></span>
-                                                        </label>
-                                                    </td>
-                                                    <td>
-                                                        <div class="table-data__info">
-                                                            <h6>lori lynch</h6>
-                                                            <span>
-                                                                <a href="#">johndoe@gmail.com</a>
-                                                            </span>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <span class="role user">user</span>
-                                                    </td>
-                                                    <td>
-                                                        <div class="rs-select2--trans rs-select2--sm">
-                                                            <select class="js-select2" name="property">
-                                                                <option value="">Full Control</option>
-                                                                <option value="" selected="selected">Post</option>
-                                                                <option value="">Watch</option>
-                                                            </select>
-                                                            <div class="dropDownSelect2"></div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <span class="more">
-                                                            <i class="zmdi zmdi-more"></i>
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <label class="au-checkbox">
-                                                            <input type="checkbox">
-                                                            <span class="au-checkmark"></span>
-                                                        </label>
-                                                    </td>
-                                                    <td>
-                                                        <div class="table-data__info">
-                                                            <h6>lori lynch</h6>
-                                                            <span>
-                                                                <a href="#">johndoe@gmail.com</a>
-                                                            </span>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <span class="role member">member</span>
-                                                    </td>
-                                                    <td>
-                                                        <div class="rs-select2--trans rs-select2--sm">
-                                                            <select class="js-select2" name="property">
-                                                                <option selected="selected">Full Control</option>
-                                                                <option value="">Post</option>
-                                                                <option value="">Watch</option>
-                                                            </select>
-                                                            <div class="dropDownSelect2"></div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <span class="more">
-                                                            <i class="zmdi zmdi-more"></i>
-                                                        </span>
-                                                    </td>
-                                                </tr>
+                                                                            <td>
+                                                                              <div style="margin: 20px;">
+                                                                            <button style="margin-left: 10px;" id="<?= $res['doctor_id'] ?>"><i title="Chat with <?= $res['fullName'] ?>" class="zmdi zmdi-comment-text" ></i></<button></div>
+                                                                        
+                                                                        </td>
+
+                                                                    </div>
+                                                                </div>
+                                                              </tr>
+                                                            
+                                                              <?php
+
+
+                                                          }
+
+                                                        
+                                                        }
+
+                                                          else{
+                                                            echo "<div class='text-danger'>You have not been matched to any doctor!</div>";
+                                                          }
+                                                        
+
+                                                    ?>
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div class="user-data__footer">
-                                        <button class="au-btn au-btn-load">load more</button>
-                                    </div>
                                 </div>
-                                <!-- END USER DATA-->
-                            </div>
-                            <div class="col-xl-6">
-                                <!-- MAP DATA-->
-                                <div class="map-data m-b-40">
-                                    <h3 class="title-3 m-b-30">
-                                        <i class="zmdi zmdi-map"></i>map data</h3>
-                                    <div class="filters">
-                                        <div class="rs-select2--dark rs-select2--md m-r-10 rs-select2--border">
-                                            <select class="js-select2" name="property">
-                                                <option selected="selected">All Worldwide</option>
-                                                <option value="">Products</option>
-                                                <option value="">Services</option>
-                                            </select>
-                                            <div class="dropDownSelect2"></div>
-                                        </div>
-                                        <div class="rs-select2--dark rs-select2--sm rs-select2--border">
-                                            <select class="js-select2 au-select-dark" name="time">
-                                                <option selected="selected">All Time</option>
-                                                <option value="">By Month</option>
-                                                <option value="">By Day</option>
-                                            </select>
-                                            <div class="dropDownSelect2"></div>
-                                        </div>
-                                    </div>
-                                    <div class="map-wrap m-t-45 m-b-80">
-                                        <div id="vmap" style="height: 284px;"></div>
-                                    </div>
-                                    <div class="table-wrap">
-                                        <div class="table-responsive table-style1">
-                                            <table class="table">
-                                                <tbody>
-                                                    <tr>
-                                                        <td>United States</td>
-                                                        <td>$119,366.96</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Australia</td>
-                                                        <td>$70,261.65</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>United Kingdom</td>
-                                                        <td>$46,399.22</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="table-responsive table-style1">
-                                            <table class="table">
-                                                <tbody>
-                                                    <tr>
-                                                        <td>Germany</td>
-                                                        <td>$20,366.96</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>France</td>
-                                                        <td>$10,366.96</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Russian</td>
-                                                        <td>$5,366.96</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- END MAP DATA-->
                             </div>
                         </div>
-                    </div>
-                </div>
-            </section>
+            
+            <!-- BREADCRUMB-->
+
+
+                                   <div class="allpost">
+                      <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <strong class="card-title" style="color: black">My appointments
+                                        </strong>
+                                    </div>
+                                    <div class="card-body">
+                                                <?php
+                                                      $Did=$_SESSION['patient_id'];
+                                                      $con=mysqli_connect('localhost','root','','infantry');
+                                                      $sql="select * from appointments where patient_name='$username' and status='0' ";
+                                                      $dbc=mysqli_query($con,$sql);
+                                                      
+                                                      if ($dbc->num_rows>0) {
+                                                        ?>
+                                                          <div class="table-responsive m-b-40">
+                                                            <table class="table table-borderless table-data3">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>S/N</th>
+                                                                        <th>doctor name</th>
+                                                                        <th>date</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                 <tbody>
+                                                          
+                                                        <?php
+                                                        
+                                                        $count=1;
+                                                        while ($app=mysqli_fetch_array($dbc)) {
+                                                            $app_id=$app['id'];
+                                                            $date=$app['date'];
+                                                            ?>
+                                                        <tr>
+                                                        <td><?=$count?></td>
+                                                        <td><?=$name?></td>
+                                                        <td><?=$date?></td>
+                                                        
+                                                        
+                                                       </tr> 
+                                                
+
+
+                                                            <?php
+                                                            $count++;
+                                                        }
+                                                          
+                                                      }
+                                                      else{
+                                                            echo '<div class="text-danger">You have no pending appointment with any doctor</div>';
+                                                            
+                                                      }
+
+
+                                                ?>
+                                               
+                                             </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+            
+
+
+
+
+                         <div class="allpost">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="card-title " style="color: black">Enter Your complaint or select from the dropdown<BR>
+                                          <b style="color: red">Note</b>: if you enter no complaint into the text area,<br> the selected complaint in the dropdown is picked automatically<br>
+                                            <?php
+                                                if (isset($_POST['complain'])) {
+                                                  $patients_id=$_SESSION['patient_id'];
+                                                    $dropdownComplaint=$_POST['dropcomplaint'];
+                                                    $complaint=$_POST['complaint'];
+
+                                                  if ($complaint=='') {
+
+                                                    $dbc=mysqli_query($con,"select * from specializations where sample_problems='$dropdownComplaint' ");
+                                                        $result=mysqli_fetch_array($dbc);
+                                                        $sample=$result['name'];
+
+                                                      $sql="select doctors.id,doctors.fullName from doctors where doctors.specialization='$sample' and doctors.status=1";
+                                                      $dbc=mysqli_query($con,$sql);
+                                                      $isMatched = false;
+                                                      while ($row=mysqli_fetch_array($dbc)) {
+                                                        $id=$row['id'];
+
+                                                          $result=mysqli_query($con,"select * from matchings where doctor_id='$id' ");
+                                                          $matches=$result->num_rows;
+
+
+                                                          if ($matches<4) {
+                                                            $date=date('F j, Y, g:i A');
+                                                            $matching=mysqli_query($con,"insert into matchings values('','$date','-','$id','$patients_id','$dropdownComplaint','0')");
+                                                              $isMatched = true;
+                                                              break; 
+                                                           
+                                                          }
+                                                         
+                                                                                                                  
+                                                      }
+
+                                                    echo $isMatched==true ? "<script>alert('You have been matched to a doctor!') </script>" : "<script>alert('No doctor available for this complaint..please try again later')</script>";
+
+
+                                                  }
+
+
+
+                                                  else{
+
+                                                     $complaint = explode(" ", $_POST['complaint']);
+                                                      $queries ="SELECT * FROM specializations WHERE sample_problems like '%" . $complaint[0] . "%'";
+      
+                                                     for($i = 1; $i < count($complaint); $i++) {
+                                                        if(!empty($complaint[$i])) {
+                                                            $queries .= " OR sample_problems like '%" . $complaint[$i] . "%'";
+                                                        }
+                                                      }
+                                                       $dbc=mysqli_query($con,$queries);
+                                                       $result=mysqli_fetch_array($dbc);
+                                                       $sample=$result['name'];
+
+
+                                                      $sql="select doctors.id,doctors.fullName from doctors where doctors.specialization='$sample' and doctors.status=1";
+                                                      $dbc=mysqli_query($con,$sql);
+                                                      $isMatched = false;
+                                                      while ($row=mysqli_fetch_array($dbc)) {
+                                                        $id=$row['id'];
+
+                                                          $result=mysqli_query($con,"select * from matchings where doctor_id='$id' ");
+                                                          $matches=$result->num_rows;
+
+
+                                                          if ($matches<4) {
+                                                            $date=date('F j, Y, g:i A');
+                                                            $matching=mysqli_query($con,"insert into matchings values('','$date','-','$id','$patients_id','$dropdownComplaint','0')");
+                                                              $isMatched = true;
+                                                              break; 
+                                                           
+                                                          }
+                                                      }
+
+                                                    echo $isMatched==true ? "<script>alert('You have been matched to a doctor!') </script>" : "<script>alert('No doctor available for this complaint..please try again later')</script>";
+                                                  }
+                                              }
+                                            ?>
+
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <form action="" method="post" enctype="multipart/form-data">
+                                            <div class="form-group">
+                                                <label for="nf-email" class=" form-control-label">Check for likely complaint in the dropdown</label>
+                                                <select name="dropcomplaint" class="form-control">
+                                                        <?php
+                                                        $sql="select * from specializations";
+                                                        $dbc=mysqli_query($con,$sql);
+                                                        while ($row=mysqli_fetch_array($dbc)) {
+                                                            echo "<option value=\"{$row['sample_problems']}\">{$row['sample_problems']}</option>";
+                                                            }      
+                                                        ?>
+                                                        
+
+                                                        
+                                                    </select> 
+                                                </div>
+
+                                            <div class="form-group">
+                                                <label for="" class=" form-control-label">Enter your complaint here</label>
+                                                <textarea name="complaint" class="form-control" rows="8"></textarea>
+                                                
+                                            </div>
+                                        
+                                    </div>
+                                    <div class="card-footer">
+                                        <input type="submit" class="btn btn-primary btn-sm" value="submit complaint" name="complain">
+                                        </form>
+                                        
+                                    </div>
+                                 </div>
+                            </div>
+                        </div>
+            
+
 
             <!--footer-->
             <?php include('includes/footer.php');?>
@@ -480,3 +347,5 @@ if(!isset($_SESSION['patient_id'])){
 
 </html>
 <!-- end document-->
+
+

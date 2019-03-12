@@ -1,9 +1,5 @@
 <?php
-session_start();
-if(!isset($_SESSION['doctor_id'])){
-  header("Location:index.php");
-}
-
+  session_start();
   $id=$_SESSION['doctor_id'];
   $userType='doctors';
   $con=mysqli_connect('localhost','root','','infantry');
@@ -68,7 +64,7 @@ if(!isset($_SESSION['doctor_id'])){
 <body class="animsition">
     <div class="page-wrapper">
         <!-- MENU SIDEBAR-->
-        <?php include('includes/sidebar.php');?>
+        <?php include('includes/sidebar2.php');?>
         <!-- END MENU SIDEBAR-->
         
         <!-- PAGE CONTAINER-->
@@ -106,23 +102,26 @@ if(!isset($_SESSION['doctor_id'])){
                                         </strong>
                                     </div>
                                     <div class="card-body">
-                                          <div class="table-responsive m-b-40">
-                                            <table class="table table-borderless table-data3">
-                                                <thead>
-                                                    <tr>
-                                                        <th>S/N</th>
-                                                        <th>patient name</th>
-                                                        <th>date</th>
-                                                        <th>Action</th>
-                                                    </tr>
-                                                </thead>
-                                                 <tbody>
                                                 <?php
                                                       $Did=$_SESSION['doctor_id'];
                                                       $con=mysqli_connect('localhost','root','','infantry');
-                                                      $sql="select * from appointments where doctor_id='9' and status='0' ";
+                                                      $sql="select * from appointments where doctor_id='$Did' and status='0' ";
                                                       $dbc=mysqli_query($con,$sql);
                                                       if ($dbc->num_rows>0) {
+                                                        ?>
+                                                        <div class="table-responsive m-b-40">
+                                                          <table class="table table-borderless table-data3">
+                                                              <thead>
+                                                                  <tr>
+                                                                      <th>S/N</th>
+                                                                      <th>patient name</th>
+                                                                      <th>date</th>
+                                                                      <th>Action</th>
+                                                                  </tr>
+                                                              </thead>
+                                                               <tbody>
+                                                        
+                                                        <?php
                                                         $count=1;
                                                         while ($app=mysqli_fetch_array($dbc)) {
                                                             $app_id=$app['id'];
@@ -149,8 +148,8 @@ if(!isset($_SESSION['doctor_id'])){
                                                           
                                                       }
                                                       else{
-                                                            echo "<script>alert('You have no pending appointment with any patient.')</script>";
-                                                            echo "<script>window.location='doctorhome.php'</script>";
+                                                             echo "<div class='text-danger'>You have no pending appointment with any patient.'</div>";
+                                                        
 
                                                       }
 

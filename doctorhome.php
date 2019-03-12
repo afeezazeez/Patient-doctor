@@ -1,8 +1,8 @@
 <?php
 session_start();
-if(!isset($_SESSION['doctor_id'])){
-  header("Location:index.php");
-}
+//if(!isset($_SESSION['doctor_id'])){
+  //header("Location:index.php");
+//}
 
   $id=$_SESSION['doctor_id'];
   $userType='doctors';
@@ -21,7 +21,7 @@ if(!isset($_SESSION['doctor_id'])){
 if(isset($_GET['match'])){
     $match_id=$_GET['match'];
     $con=mysqli_connect('localhost','root','','infantry');
-    $sql="delete from matchings where id='$match_id' ";
+    $sql="update matchings set status='1' where id='$match_id' ";
     $dbc=mysqli_query($con,$sql);
     if($dbc){
     echo "<script>alert('chat has been ended.')</script>";
@@ -52,14 +52,14 @@ echo mysql_error($con);
     <!-- Title Page-->
     <?php include('includes/css.php');?>
         <link rel="stylesheet" type="text/css" href="css/style.css">
-
+        
     
 </head>
 
 <body class="animsition">
     <div class="page-wrapper">
         <!-- MENU SIDEBAR-->
-        <?php include('includes/sidebar.php');?>
+        <?php include('includes/sidebar2.php');?>
         <!-- END MENU SIDEBAR-->
         
         <!-- PAGE CONTAINER-->
@@ -88,7 +88,7 @@ echo mysql_error($con);
                                                     <?php
                                                     $id=$_SESSION['doctor_id'];
                                                     // echo $id;
-                                                        $sql2="select matchings.*, patients.fullName from matchings, patients where matchings.doctor_id=$id AND patients.id = matchings.patient_id AND matchings.status='0' limit 4 ";
+                                                        $sql2="select matchings.*, patients.fullName, patients.id as patient_id from matchings, patients where matchings.doctor_id=$id AND patients.id = matchings.patient_id AND matchings.status='0'  ";
                                                               $dbc2=mysqli_query($con,$sql2);
                                                               if ($dbc2->num_rows>0) {
                                                                   # code...
@@ -99,8 +99,12 @@ echo mysql_error($con);
                                                                     <div class="au-task__item-inner">
                                                                         <h5 class="task">
                                                                              <?= $res['fullName'] ?>
-                                                                            <button style="margin-left: 10px;" id="<?= $res['patient_id'] ?>"><i title="Chat with <?= $res['fullName'] ?>" class="zmdi zmdi-comment-text" ></i></<button>&nbsp&nbsp
-                                                                                <a href="doctorhome.php?match=<?=$res['id']?>"><i class="fa fa-trash" title="end chat "></i></a>
+                                                                            <a href="chat.php?id=<?=$res['patient_id']?>"><button title="chat with <?= $res['fullName'] ?>" style="margin-left: 10px;"  class="btn btn-primary btn-sm start_chat">chat<button></button></a>&nbsp&nbsp
+                                                                         <a href="doctorhome.php?match=<?=$res['id']?>">
+                                                                         <button class="btn-sm btn-danger btn" title="end chat">end chat</button>
+                                                                         </a>
+                                                                                
+
                                                                         </h5>
                                                                         <span class="time" style="text-transform: lowercase;"><?= date('F j, Y, g:i A',strtotime($res['start_date'])) ?></span>
                                                                     </div>

@@ -33,7 +33,6 @@
             <div class="collapse navbar-collapse navbar-right" id="myNavbar">
               <ul class="nav navbar-nav">
                 <li class="active text"><a href="#banner">Home</a></li>
-                <li class="text"><a href="adminlogin.php">admin sign in</a></li>
                 <li class="text"><a href="doctorlogin.php">doctor sign in</a></li>
                 <li class="text"><a href="doctorregister.php">doctor sign up</a></li>
                 <li class="text"><a href="patientlogin.php">patient sign in</a></li>

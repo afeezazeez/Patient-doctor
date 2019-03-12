@@ -3,11 +3,12 @@
                 <a href="">
                     <img src="images/logo.png" class="small" alt="Cool Admin" />
                     <font color="white" size="4px">Infantry Nga</font>              
+              
                 </a>
             </div>
             <div class="menu-sidebar2__content js-scrollbar1">
                 <div class="account2">
-                    <a href="adminhome.php">
+                    <a href="doctorhome.php">
                     <div class="image img-cir img-120">
                         <img src="profilePhotos/<?=$imageName ?>" alt="John Doe" />
                     </div>
@@ -23,21 +24,28 @@
                     <ul class="list-unstyled navbar__list">
                         <li class="active has-sub">
                             <a class="js-arrow" href="#">
-                                <i class="fas fa-eit"></i>Edit my profile
+                                <i class="fas fa-edi"></i>Profile
                                 
                             </a>
                             
                         </li>
                         <li class="active has-sub">
-                            <a class="js-arrow" href="#spec">
-                                <i class="fas fa-pls"></i>Add new specialization
+                            <a class="js-arrow" href="./appointments.php">
+                                <i class="fas fa-pls"></i>My Apointments
                     
                             </a>
                             
                         </li>
                         <li class="active has-sub">
-                            <a class="js-arrow" href="#">
-                                <i class="fas fa-show"></i>View specializations
+                            <a class="js-arrow" href="./appointments.php">
+                                <i class="fas fa-pls"></i>Edit a post
+                    
+                            </a>
+                            
+                        </li>
+                        <li class="active has-sub">
+                            <a class="js-arrow" href="./appointments.php">
+                                <i class="fas fa-pls"></i>Add new Post
                     
                             </a>
                             
@@ -48,4 +56,3 @@
                 </nav>
             </div>
         </aside>
-
