@@ -3,58 +3,25 @@
 
 <?php
 session_start();
-if(!isset($_SESSION['doctor_id'])){
+if(!isset($_SESSION['patient_id'])){
   header("Location:index.php");
 }
 
-  $id=$_SESSION['doctor_id'];
-  $userType='doctors';
+
+$id=$_SESSION['patient_id'];
+  $userType='patients';
   $con=mysqli_connect('localhost','root','','infantry');
   $sql="select * from $userType where id='$id' ";
   $dbc=mysqli_query($con,$sql);
   while ($row=mysqli_fetch_array($dbc)) {
+      $patient_id=$row['id'];
       $username=$row['fullName'];
       $imageName=$row['imageName'];
       $email=$row['emailAddress'];
       $Duser_type=$row['user_type'];
 
   }
-
-   if (isset($_GET['commentId'])) {
-       $commentId=$_GET['commentId'];
-       $con=mysqli_connect('localhost','root','','infantry');
-       $sql="delete from comments where id='$commentId' ";
-       $dbc=mysqli_query($con,$sql);
-       if ($dbc) {
-          echo "<script>alert('comment has been deleted')</script>";
-       }
-       else{
-        mysqli_error($con);
-       }
  
-      
-  }
-
-
-  if (isset($_GET['dslug'])) {
-       $dslug=$_GET['dslug'];
-       $con=mysqli_connect('localhost','root','','infantry');
-       $sql="delete from posts where slug='$dslug' ";
-       $dbc=mysqli_query($con,$sql);
-       if ($dbc) {
-          echo "<script>alert('post has been deleted')</script>";
-          echo "<script>window.location='allposts.php'</script>";
-        
-       }
-       else{
-        mysqli_error($con);
-       }
- 
-      
-    }  
-
-                                                             
-                                          
 
 
 ?>
@@ -71,7 +38,7 @@ if(!isset($_SESSION['doctor_id'])){
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Doctor Post</title>
+    <title>Patient Post</title>
 
     <!-- Title Page-->
     <?php include('includes/css.php');?>
@@ -83,7 +50,7 @@ if(!isset($_SESSION['doctor_id'])){
 <body class="animsition">
     <div class="page-wrapper">
         <!-- MENU SIDEBAR-->
-        <?php include('includes/sidebar2.php');?>
+        <?php include('includes/sidebar3.php');?>
         <!-- END MENU SIDEBAR-->
         
         <!-- PAGE CONTAINER-->
@@ -116,7 +83,7 @@ if(!isset($_SESSION['doctor_id'])){
                         $dateC=$_POST['dateC'];
                         $comment=$_POST['comment'];
                         $postid=$post_id;
-                        $name="Dr.". $username;
+                        $name=$username;
 
                         if($comment==''){
                          echo "<script>alert('comment cannot be empty')</script>";
@@ -152,7 +119,6 @@ if(!isset($_SESSION['doctor_id'])){
                                     <?=$content?>
                                 </p><br>
                                 <p>Posted on <?=$date?>&nbsp&nbsp
-                                <a href="postview.php?dslug=<?=$slug?>">delete&nbsp<i class="fa fa-trash" title="delete post" style="color: #696969; "></i></a>
                               </p>
                             </div>
                             <div class="comment">
@@ -177,13 +143,11 @@ if(!isset($_SESSION['doctor_id'])){
                                                 <p class="card-text"><span class="com"><i class="fa fa-comment"></i></span><i><?=$res['body']?></i>&nbsp&nbsp&nbsp</p>
 
                                                 <p class="card-text">by <?=$res['patient_name']?></p>
-                                                <p class="card-text"><?=$res['date']?>&nbsp&nbsp
-                                                  <a href="postview.php?slug=<?=$slug?>&commentId=<?=$commentId?>" style="color: black;"><i class="fa fa-trash"></i></a>
-                                                </p>
-                                                <br></div>
+                                                <p class="card-text"><?=$res['date']?>
+                                              
+                                                </p><br></div>
 
-
-                                              <?php
+                                                 <?php
                                           }
                                       }
                                       else{

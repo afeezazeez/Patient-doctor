@@ -1,22 +1,23 @@
 <?php
 session_start();
-if(!isset($_SESSION['doctor_id'])){
+if(!isset($_SESSION['patient_id'])){
   header("Location:index.php");
 }
 
-  $id=$_SESSION['doctor_id'];
-  $userType='doctors';
+
+$id=$_SESSION['patient_id'];
+  $userType='patients';
   $con=mysqli_connect('localhost','root','','infantry');
   $sql="select * from $userType where id='$id' ";
   $dbc=mysqli_query($con,$sql);
   while ($row=mysqli_fetch_array($dbc)) {
+      $patient_id=$row['id'];
       $username=$row['fullName'];
       $imageName=$row['imageName'];
       $email=$row['emailAddress'];
       $Duser_type=$row['user_type'];
 
   }
-
  
   
 
@@ -36,7 +37,7 @@ if(!isset($_SESSION['doctor_id'])){
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Doctor Home</title>
+    <title>Patient Post</title>
 
     <!-- Title Page-->
     <?php include('includes/css.php');?>
@@ -48,7 +49,7 @@ if(!isset($_SESSION['doctor_id'])){
 <body class="animsition">
     <div class="page-wrapper">
         <!-- MENU SIDEBAR-->
-        <?php include('includes/sidebar.php');?>
+        <?php include('includes/sidebar3.php');?>
         <!-- END MENU SIDEBAR-->
         
         <!-- PAGE CONTAINER-->
@@ -76,8 +77,7 @@ if(!isset($_SESSION['doctor_id'])){
                                                         <th>Title</th>
                                                         <th>Content</th>
                                                         <th>Date created</th>
-                                                        <th>Action</th>
-                                                    </tr>
+                                                      </tr>
                                                 </thead>
                                                 <tbody>
                                         
@@ -105,14 +105,8 @@ if(!isset($_SESSION['doctor_id'])){
                                                     <tr>
                                                         <td><?=$count?></td>
                                                         <td><?=$Ptitle?></td>
-                                                        <td><?=$shortContent?><a href="postview.php?slug=<?=$Pslug?>" class="btn btn-sm btn-primary readmore">Read More</a></td>
+                                                        <td><?=$shortContent?><a href="patientpostview.php?slug=<?=$Pslug?>" class="btn btn-sm btn-primary readmore">Read More</a></td>
                                                         <td><?=$Pdate?></td>
-                                                        <td>
-                                                            <a href="editpost.php?dslug=<?=$Pslug?>"><i class="fa fa-edit" style="color: #cccccc" title="edit post"></i></a>&nbsp&nbsp
-                                                            <a href="postview.php?dslug=<?=$Pslug?>"><i class="fa fa-trash" title="delete post" style="color: #cccccc"></i></a>
-                                                        </td>
-                                                        
-                                                        
                                                        </tr> 
                                                 </tbody>
                                             

@@ -99,7 +99,7 @@ echo mysql_error($con);
                                                                     <div class="au-task__item-inner">
                                                                         <h5 class="task">
                                                                              <?= $res['fullName'] ?>
-                                                                            <a href="chat.php?id=<?=$res['patient_id']?>"><button title="chat with <?= $res['fullName'] ?>" style="margin-left: 10px;"  class="btn btn-primary btn-sm start_chat">chat<button></button></a>&nbsp&nbsp
+                                                                            <a href="doctorchat.php?id=<?=$res['patient_id']?>"><button title="chat with <?= $res['fullName'] ?>" style="margin-left: 10px;"  class="btn btn-primary btn-sm start_chat">chat<button></button></a>&nbsp&nbsp
                                                                          <a href="doctorhome.php?match=<?=$res['id']?>">
                                                                          <button class="btn-sm btn-danger btn" title="end chat">end chat</button>
                                                                          </a>

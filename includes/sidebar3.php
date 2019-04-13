@@ -43,6 +43,13 @@
                             </a>
                             
                         </li>
+                        <li class="active has-sub">
+                            <a class="js-arrow" href="patientposts.php">
+                                <i class="fas fa-edt"></i>Doctors Posts
+                                
+                            </a>
+                            
+                        </li>
                         
                         
   

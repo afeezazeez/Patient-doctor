@@ -23,13 +23,6 @@
                 <nav class="navbar-sidebar2">
                     <ul class="list-unstyled navbar__list">
                         <li class="active has-sub">
-                            <a class="js-arrow" href="#">
-                                <i class="fas fa-edi"></i>Profile
-                                
-                            </a>
-                            
-                        </li>
-                        <li class="active has-sub">
                             <a class="js-arrow" href="./appointments.php">
                                 <i class="fas fa-pls"></i>My Apointments
                     
@@ -37,14 +30,14 @@
                             
                         </li>
                         <li class="active has-sub">
-                            <a class="js-arrow" href="./appointments.php">
+                            <a class="js-arrow" href="#">
                                 <i class="fas fa-pls"></i>Edit a post
                     
                             </a>
                             
                         </li>
                         <li class="active has-sub">
-                            <a class="js-arrow" href="./appointments.php">
+                            <a class="js-arrow" href="#">
                                 <i class="fas fa-pls"></i>Add new Post
                     
                             </a>

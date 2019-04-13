@@ -18,7 +18,7 @@ if ($connect->num_rows>0) {
 }
 
 else{
-  $sql="insert into $userType  VALUES ('', '$fullName', '$email', '$hash_password','$imgName','$user_type')";
+  $sql="insert into $userType  VALUES ('', '$fullName', '$email', '$hash_password','dev.jpg','$user_type')";
   $dbc=mysqli_query($con,$sql);
 
     if(!move_uploaded_file($_FILES['image']['tmp_name'], $target_file)){

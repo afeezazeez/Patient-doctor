@@ -1,4 +1,4 @@
-
+
 <?php
 session_start();
 if(!isset($_SESSION['patient_id'])){
@@ -78,7 +78,7 @@ $id=$_SESSION['patient_id'];
                                     <div class="card-body">
                                                   <?php
                                                   $id=$_SESSION['patient_id'];
-                                                        $sql2="select matchings.*, doctors.fullName from matchings, doctors where matchings.patient_id=$id AND doctors.id = matchings.doctor_id AND matchings.status='0'  ";
+                                                        $sql2="select matchings.*, doctors.fullName,doctors.id from matchings, doctors where matchings.patient_id=$id AND doctors.id = matchings.doctor_id AND matchings.status='0'  ";
                                                         $dbc2=mysqli_query($con,$sql2);
                                                         if ($dbc2->num_rows>0) {
 
@@ -109,7 +109,7 @@ $id=$_SESSION['patient_id'];
 
                                                                             <td>
                                                                               <div style="margin: 20px;">
-                                                                            <button style="margin-left: 10px;" id="<?= $res['doctor_id'] ?>"><i title="Chat with <?= $res['fullName'] ?>" class="zmdi zmdi-comment-text" ></i></<button></div>
+                                                                            <a href="patientchat.php?id=<?=$res['id']?>"><button style="margin-left: 10px;" id="<?= $res['doctor_id'] ?>"><i title="Chat with <?= $res['fullName'] ?>" class="zmdi zmdi-comment-text" ></i></<button></div></a>
                                                                         
                                                                         </td>
 
@@ -152,7 +152,7 @@ $id=$_SESSION['patient_id'];
                                                 <?php
                                                       $Did=$_SESSION['patient_id'];
                                                       $con=mysqli_connect('localhost','root','','infantry');
-                                                      $sql="select * from appointments where patient_name='$username' and status='0' ";
+                                                      $sql="select * from appointments where patient_name='$id' and status='0' ";
                                                       $dbc=mysqli_query($con,$sql);
                                                       
                                                       if ($dbc->num_rows>0) {
@@ -174,6 +174,11 @@ $id=$_SESSION['patient_id'];
                                                         while ($app=mysqli_fetch_array($dbc)) {
                                                             $app_id=$app['id'];
                                                             $date=$app['date'];
+                                                            $doc_id=$app['doctor_id'];
+
+                                                            $result=mysqli_fetch_array(mysqli_query($con,"select * from doctors where id='$doc_id' "));
+                                                            $name=$result['fullName'];  
+
                                                             ?>
                                                         <tr>
                                                         <td><?=$count?></td>
@@ -217,6 +222,8 @@ $id=$_SESSION['patient_id'];
                                           <b style="color: red">Note</b>: if you enter no complaint into the text area,<br> the selected complaint in the dropdown is picked automatically<br>
                                             <?php
                                                 if (isset($_POST['complain'])) {
+
+
                                                   $patients_id=$_SESSION['patient_id'];
                                                     $dropdownComplaint=$_POST['dropcomplaint'];
                                                     $complaint=$_POST['complaint'];
@@ -230,30 +237,58 @@ $id=$_SESSION['patient_id'];
                                                       $sql="select doctors.id,doctors.fullName from doctors where doctors.specialization='$sample' and doctors.status=1";
                                                       $dbc=mysqli_query($con,$sql);
                                                       $isMatched = false;
-                                                      while ($row=mysqli_fetch_array($dbc)) {
-                                                        $id=$row['id'];
+                                                      $hasMatch=false;
+                                                      $responseMsg = 'No Doctor Available';
 
-                                                          $result=mysqli_query($con,"select * from matchings where doctor_id='$id' ");
-                                                          $matches=$result->num_rows;
+                                                      $queryCheckForPrev = mysqli_query($con,"select * from matchings where patient_id='$patients_id' and complaint='$dropdownComplaint' and status='1' ");
+                                                      if(mysqli_num_rows($queryCheckForPrev) === 1) {
+                                                        $RemactchSql="update matchings set status='0' where patient_id='$patients_id' and complaint='$dropdownComplaint' and status='1' ";
+                                                        $RemactchQuery=mysqli_query($con,$RemactchSql);
+                                                        if ($RemactchQuery) {
+                                                          $responseMsg = 'You have been matched to a doctor before on similar issue. So you have been rematched to him again';
+
+                                                        }
+                                                          
+
+                                                      }else {
+
+                                                        while ($row=mysqli_fetch_array($dbc)) {
+                                                            $id=$row['id'];
+
+                                                            $result=mysqli_query($con,"select * from matchings where doctor_id='$id' and complaint='$dropdownComplaint'and status='0' ");
 
 
-                                                          if ($matches<4) {
-                                                            $date=date('F j, Y, g:i A');
-                                                            $matching=mysqli_query($con,"insert into matchings values('','$date','-','$id','$patients_id','$dropdownComplaint','0')");
-                                                              $isMatched = true;
-                                                              break; 
-                                                           
-                                                          }
-                                                         
-                                                                                                                  
+                                                            $matches=$result->num_rows;
+                                                            
+                                                                  
+                                                                                                             
+                                                            if ($matches<4) {
+
+                                                                $resultPrevious=mysqli_query($con,"select * from matchings where doctor_id='$id' and complaint='$dropdownComplaint' and status='0' and patient_id='$patients_id' ");
+
+                                                                if(mysqli_num_rows($resultPrevious) > 0 )  {
+                                                                   $responseMsg = "You are currently being attended to by a doctor for this complaint";
+                                                                    break;
+                                                                }else{
+
+                                                                  $date=date('F j, Y, g:i A');                                                       
+                                                                 $matching=mysqli_query($con,"insert into matchings values('','$date','-','$id','$patients_id','$dropdownComplaint','0')");
+                                                                  $isMatched = true;                                                     
+                                                                    break;
+                                                                }  
+                                                            }
+                                                                                                                    
+                                                        }
+                                                        
                                                       }
-
-                                                    echo $isMatched==true ? "<script>alert('You have been matched to a doctor!') </script>" : "<script>alert('No doctor available for this complaint..please try again later')</script>";
+                                                      
+                                                      
+                                                    echo $isMatched==true ? "<script>alert('You have been matched to a doctor!') </script>" : "<script>alert('$responseMsg')</script>";
 
 
                                                   }
 
-
+                                                  // fix text area matching
 
                                                   else{
 
@@ -268,29 +303,65 @@ $id=$_SESSION['patient_id'];
                                                        $dbc=mysqli_query($con,$queries);
                                                        $result=mysqli_fetch_array($dbc);
                                                        $sample=$result['name'];
-
-
-                                                      $sql="select doctors.id,doctors.fullName from doctors where doctors.specialization='$sample' and doctors.status=1";
+                                                       $sql="select doctors.id,doctors.fullName from doctors where doctors.specialization='$sample' and doctors.status=1";
                                                       $dbc=mysqli_query($con,$sql);
                                                       $isMatched = false;
-                                                      while ($row=mysqli_fetch_array($dbc)) {
-                                                        $id=$row['id'];
+                                                      $hasMatch=false;
+                                                      $responseMsg = 'No Doctor Available';
 
-                                                          $result=mysqli_query($con,"select * from matchings where doctor_id='$id' ");
-                                                          $matches=$result->num_rows;
+                                                      $queryCheckForPrev = mysqli_query($con,"select * from matchings where patient_id='$patients_id' and complaint='$dropdownComplaint' and status='1' ");
+
+                                                      
+                                                      if(mysqli_num_rows($queryCheckForPrev) === 1) {
+                                                        $RemactchSql="update matchings set status='0' where patient_id='$patients_id' and complaint='$complaint' and status='1' ";
+                                                        $RemactchQuery=mysqli_query($con,$RemactchSql);
+                                                        if ($RemactchQuery) {
+                                                          $responseMsg = 'You have matched to a doctor before on similar issue. So you have been rematched to him again';
+
+                                                        }
+                                                          
+
+                                                      }else {
+
+                                                        while ($row=mysqli_fetch_array($dbc)) {
+                                                            $id=$row['id'];
+
+                                                            $result=mysqli_query($con,"select * from matchings where doctor_id='$id' and complaint='$dropdownComplaint'and status='0' ");
 
 
-                                                          if ($matches<4) {
-                                                            $date=date('F j, Y, g:i A');
-                                                            $matching=mysqli_query($con,"insert into matchings values('','$date','-','$id','$patients_id','$dropdownComplaint','0')");
-                                                              $isMatched = true;
-                                                              break; 
-                                                           
-                                                          }
+                                                            $matches=$result->num_rows;
+                                                            
+                                                                  
+                                                                                                             
+                                                            if ($matches<4) {
+
+                                                                $resultPrevious=mysqli_query($con,"select * from matchings where doctor_id='$id' and complaint='$dropdownComplaint' and status='0' and patient_id='$patients_id' ");
+
+                                                                if(mysqli_num_rows($resultPrevious) > 0 )  {
+                                                                   $responseMsg = "You are currently being attended to by a doctor for thiscomplaint.";
+                                                                    break;
+                                                                }else{
+
+                                                                  $date=date('F j, Y, g:i A');                                                       
+                                                                 $matching=mysqli_query($con,"insert into matchings values('','$date','-','$id','$patients_id','$dropdownComplaint','0')");
+                                                                  $isMatched = true;                                                     
+                                                                    break;
+                                                                }  
+                                                            }
+                                                                                                                    
+                                                        }
+                                                        
                                                       }
+                                                      
+                                                      
+                                                  
 
-                                                    echo $isMatched==true ? "<script>alert('You have been matched to a doctor!') </script>" : "<script>alert('No doctor available for this complaint..please try again later')</script>";
-                                                  }
+
+                                                        }
+                                                         echo $isMatched==true ? "<script>alert('You have been matched to a doctor!') </script>" : "<script>alert('$responseMsg')</script>";
+
+
+                                                      
                                               }
                                             ?>
 

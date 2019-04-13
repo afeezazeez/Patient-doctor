@@ -18,11 +18,13 @@
 
                                         
  if (isset($_POST['addApp'])) {
-        $patient_name=$_POST['patient_name'];
+        $patient_id=$_POST['patient_id'];
+        $query="select * from patients where id='$patient_id' ";
+        $result=mysqli_query($con,$query);
         $app_date=$_POST['app_date'];
         $id=$_SESSION['doctor_id'];
         $con=mysqli_connect('localhost','root','','infantry');
-        $sql="insert into appointments values('','$app_date','$patient_name','$id','0')";
+        $sql="insert into appointments values('','$app_date','$patient_id','$id','0')";
         $dbc=mysqli_query($con,$sql);
         if ($dbc) {
         echo "<script>alert('appointment has been created.')</script>";
@@ -127,11 +129,14 @@
                                                             $app_id=$app['id'];
                                                             $date=$app['date'];
                                                             $Pname=$app['patient_name'];
+
+                                                            $result=mysqli_fetch_array(mysqli_query($con,"select * from patients where id='$Pname' "));
+                                                            $name=$result['fullName'];
                                                             $status=$app['status'];
                                                             ?>
                                                         <tr>
                                                         <td><?=$count?></td>
-                                                        <td><?=$Pname?></td>
+                                                        <td><?=$name?></td>
                                                         <td><?=$date?></td>
                                                         <td>
                                                             <a href="appointments.php?app_id=<?=$app_id?>"><i class="fa fa-check-square" title="end appointment" style="color: #cccccc"></i></a>
@@ -178,7 +183,19 @@
                                         <form action="" method="post" enctype="multipart/form-data">
                                             <div class="form-group">
                                                 <label for="nf-email" class=" form-control-label">Patient Name</label>
-                                                <input type="text" id="patient_name" name="patient_name" placeholder="Enter patient name." class="form-control" required>
+                                                <select name="patient_id" class="form-control">
+                                                        <?php
+                                                        $sql="select patients.fullName,patients.id as patient_id from matchings, patients where matchings.patient_id=patients.id and matchings.doctor_id=$id and matchings.status='0' " ;
+                                                        $dbc=mysqli_query($con,$sql);
+                                                        while ($row=mysqli_fetch_array($dbc)) {
+                                                            echo "<option value=\"{$row['patient_id']}\">{$row['fullName']}</option>";
+                                                            }
+                                                                  
+                                                        ?>
+                                                        
+
+                                                        
+                                                    </select> 
                                                 </div>
 
                                                 <div class="form-group">
